@@ -39,6 +39,30 @@
     #glitch-overlay.active {
       animation: screenGlitch 0.4s steps(3) forwards;
     }
+    #fs-glitch {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      display: none;
+      z-index: 20;
+      overflow: hidden;
+    }
+    #fs-glitch.active { display: block; animation: fsFlicker 1.3s steps(26) forwards; }
+    #fs-glitch canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.22; mix-blend-mode: screen; }
+    #fs-glitch .scan {
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(0deg, rgba(0,0,0,0.35) 0 2px, transparent 2px 4px);
+    }
+    #fs-glitch .tint {
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, rgba(255,0,60,0.28), transparent 35%, rgba(0,255,230,0.25) 65%, rgba(120,0,255,0.25));
+    }
+    #fs-glitch .slice { position: absolute; left: 0; right: 0; mix-blend-mode: screen; }
+    @keyframes fsFlicker {
+      0% { opacity: 1; } 8% { opacity: 0.55; } 12% { opacity: 1; } 30% { opacity: 0.8; }
+      34% { opacity: 1; } 60% { opacity: 0.9; } 64% { opacity: 0.45; } 70% { opacity: 1; }
+      88% { opacity: 0.6; } 100% { opacity: 0; }
+    }
     @keyframes screenGlitch {
       0% {
         opacity: 0.85;
@@ -68,6 +92,7 @@
 </head>
 <body>
   <div id="glitch-overlay"></div>
+  <div id="fs-glitch"><div class="tint"></div><canvas id="noise" width="320" height="180"></canvas><div class="scan"></div></div>
   <div id="stage">
     <img id="samara" alt="" draggable="false">
   </div>
@@ -119,14 +144,60 @@
       next();
     }
 
+    const fs = document.getElementById("fs-glitch");
+    const noise = document.getElementById("noise");
+    const nctx = noise.getContext("2d");
+    const GLITCH_MS = 1300;
+    let glitchRAF = null;
+
+    function fullScreenGlitch() {
+      const start = performance.now();
+      fs.classList.remove("active");
+      void fs.offsetWidth;
+      fs.classList.add("active");
+      const colors = ["rgba(255,0,60,0.55)", "rgba(0,255,230,0.5)", "rgba(140,0,255,0.5)", "rgba(255,255,255,0.35)"];
+      function tick(now) {
+        const t = now - start;
+        if (t >= GLITCH_MS) {
+          fs.classList.remove("active");
+          fs.querySelectorAll(".slice").forEach(el => el.remove());
+          glitchRAF = null;
+          return;
+        }
+        // static noise
+        const d = nctx.createImageData(noise.width, noise.height);
+        for (let i = 0; i < d.data.length; i += 4) {
+          const v = Math.random() * 255;
+          d.data[i] = d.data[i + 1] = d.data[i + 2] = v;
+          d.data[i + 3] = 255;
+        }
+        nctx.putImageData(d, 0, 0);
+        // horizontal tearing slices, fewer as it fades out
+        fs.querySelectorAll(".slice").forEach(el => el.remove());
+        const n = Math.max(2, Math.round(10 * (1 - t / GLITCH_MS)));
+        for (let k = 0; k < n; k++) {
+          const el = document.createElement("div");
+          el.className = "slice";
+          el.style.top = (Math.random() * 100) + "%";
+          el.style.height = (2 + Math.random() * 9) + "%";
+          el.style.background = colors[k % colors.length];
+          el.style.transform = `translateX(${(Math.random() - 0.5) * 120}px)`;
+          fs.appendChild(el);
+        }
+        fs.style.transform = `translate(${(Math.random() - 0.5) * 14}px, ${(Math.random() - 0.5) * 6}px)`;
+        glitchRAF = requestAnimationFrame(tick);
+      }
+      if (glitchRAF) cancelAnimationFrame(glitchRAF);
+      glitchRAF = requestAnimationFrame(tick);
+    }
+
     function dismiss() {
       playing = false;
       clearTimer();
       overlay.classList.add("active");
       img.style.opacity = "0";
-      setTimeout(() => {
-        if (window.samara) window.samara.dismiss();
-      }, 200);
+      if (window.samara) window.samara.dismiss();
+      fullScreenGlitch();
     }
 
     img.addEventListener("mousedown", (e) => {

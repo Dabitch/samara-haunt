@@ -56,9 +56,10 @@ function glitchAndHide() {
   const { width, height } = screen.getPrimaryDisplay().bounds;
   win.setBounds({ x: 0, y: 0, width, height });
   win.webContents.send("glitch");
+  // full-screen glitch runs ~1.3 s in the renderer, then hide
   setTimeout(() => {
     if (win) win.hide();
-  }, 450);
+  }, 1400);
 }
 
 function scheduleNext() {

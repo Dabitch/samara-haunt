@@ -27,7 +27,7 @@ xattr -cr node_modules/electron/dist/Electron.app
 ```
 
 ### Controls
-- **Click / push her** — RGB glitch, she disappears
+- **Click / push her**: she disappears and the whole screen glitches for about 1.3 s (RGB bands, tearing, static, scanlines)
 - **Ctrl+Shift+S** (Cmd+Shift+S) — summon now (for testing)
 - **Ctrl+Shift+R** — dismiss
 
@@ -56,7 +56,7 @@ The well artwork is in `media/`.
 ### Desktop
 She climbs out of the well and walks toward you.
 
-[Watch the desktop demo video (19 s, with sound)](media/samara-desktop-demo.mp4). When she vanishes, the RGB glitch covers the whole screen.
+[Watch the desktop demo video (19 s, with sound)](media/samara-desktop-demo.mp4). When she vanishes, the whole screen glitches for about 1.3 s.
 
 <p>
 <img src="screenshots/desktop-1-well.png" width="260" alt="Samara climbing out of the well">
