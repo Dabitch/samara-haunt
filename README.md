@@ -42,3 +42,6 @@ Queue the day's messages with:
 cd ntfy
 python publish.py
 ```
+
+## Media
+The well artwork is in `media/`.
