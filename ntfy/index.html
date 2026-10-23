@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a1a24">
+  <title>Samara</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; }
+    body {
+      min-height: 100vh;
+      background: #04080c;
+      color: #d8e8f0;
+      font-family: Georgia, "Times New Roman", serif;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      overflow: hidden;
+      position: relative;
+    }
+    .bg {
+      position: fixed;
+      inset: 0;
+      background: #04080c url("samarawelltv.jpg") left center / cover no-repeat;
+      z-index: 0;
+    }
+    .bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to right,
+        rgba(4,8,12,0.15) 0%,
+        rgba(4,8,12,0.35) 35%,
+        rgba(4,8,12,0.75) 58%,
+        rgba(4,8,12,0.94) 78%,
+        #04080c 100%
+      );
+      pointer-events: none;
+    }
+    #glow {
+      position: fixed;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(90,25,35,0.7) 0%, rgba(30,50,70,0.35) 32%, transparent 62%);
+      pointer-events: none;
+      z-index: 3;
+      transform: translate(-50%, -50%);
+      mix-blend-mode: multiply;
+      animation: flicker 0.1s infinite;
+    }
+    @keyframes flicker {
+      0%, 100% { opacity: 0.85; }
+      40% { opacity: 0.35; }
+      60% { opacity: 1; }
+      80% { opacity: 0.2; }
+    }
+    #rgb-glitch {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 4;
+      opacity: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(255,0,0,0.08) 0 2px,
+        transparent 2px 4px,
+        rgba(0,255,255,0.06) 4px 6px,
+        transparent 6px 8px
+      );
+    }
+    #rgb-glitch.on { animation: rgbFlash 0.4s steps(2); }
+    @keyframes rgbFlash {
+      0% { opacity: 0.7; transform: translateX(3px); }
+      50% { opacity: 0.3; transform: translateX(-4px); }
+      100% { opacity: 0; }
+    }
+    .card {
+      position: relative;
+      z-index: 2;
+      width: min(420px, 92vw);
+      margin: 2rem 6vw 2rem 0;
+      background: rgba(6,12,18,0.72);
+      border: 1px solid rgba(70,120,150,0.22);
+      border-radius: 16px;
+      padding: 2.2rem 1.5rem 1.6rem;
+      text-align: center;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.55);
+    }
+    .eyebrow { font-family: system-ui, sans-serif; font-size: 0.64rem; letter-spacing: 0.4em; text-transform: uppercase; color: #7aa0b0; margin-bottom: 0.7rem; }
+    h1 { font-weight: 400; font-size: clamp(2.2rem, 7vw, 3.2rem); letter-spacing: 0.18em; margin: 0 0 0.25rem; color: #e8f4fa; text-shadow: 0 0 18px rgba(60,140,180,0.4); }
+    .tagline { font-family: system-ui, sans-serif; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: #6a90a0; margin-bottom: 1rem; }
+    p { font-family: system-ui, sans-serif; line-height: 1.5; color: #b8d0dc; margin: 0.3rem 0; }
+    .topic { display: inline-block; margin: 0.9rem 0 0.4rem; padding: 0.45rem 0.9rem; background: rgba(8,20,32,0.8); border: 1px solid rgba(80,140,170,0.3); border-radius: 8px; font-family: ui-monospace, monospace; font-size: 0.95rem; color: #d0eaf5; }
+    a.button { display: inline-block; margin-top: 0.25rem; padding: 0.7rem 1.4rem; background: linear-gradient(180deg, #1a3a4a, #0e2430); color: #e8f4fa; text-decoration: none; border: 1px solid #4a7a90; border-radius: 8px; font-family: system-ui, sans-serif; letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.78rem; }
+    .steps { text-align: left; margin: 1.2rem auto 0; padding-left: 1rem; max-width: 280px; font-family: system-ui, sans-serif; font-size: 0.86rem; color: #a8c4d0; }
+    .steps li { margin-bottom: 0.4rem; }
+    .hint { margin-top: 1.2rem; font-family: system-ui, sans-serif; font-size: 0.64rem; color: #5a7a88; }
+    .spider { position: fixed; width: 11px; height: 11px; z-index: 5; pointer-events: none; transition: left 1.6s ease-in-out, top 1.6s ease-in-out; }
+    .spider::before { content: ""; position: absolute; width: 6px; height: 6px; background: #111; border-radius: 50%; top: 2px; left: 2px; }
+    @media (max-width: 700px) {
+      body { justify-content: center; }
+      .card { margin: 1.5rem; }
+      .bg { background-position: 20% center; }
+      .bg::after {
+        background: linear-gradient(to bottom, rgba(4,8,12,0.2) 0%, rgba(4,8,12,0.7) 50%, #04080c 100%);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+  <div id="glow"></div>
+  <div id="rgb-glitch"></div>
+  <div class="spider" id="s1">*</div>
+  <div class="spider" id="s2">*</div>
+  <div class="spider" id="s3">*</div>
+  <div class="spider" id="s4">*</div>
+
+  <div class="card">
+    <div class="eyebrow">Seven days</div>
+    <h1>SAMARA</h1>
+    <div class="tagline">She never left the well</div>
+    <p>Subscribe on your phone.<br>The messages will find you.</p>
+    <div class="topic" id="topic">samara-haunt</div>
+    <br>
+    <a class="button" id="open-app" href="https://ntfy.sh/samara-haunt">Open in ntfy</a>
+    <ol class="steps">
+      <li>Install the free <strong>ntfy</strong> app.</li>
+      <li>Subscribe to the topic above.</li>
+      <li>Leave it on. She arrives later.</li>
+    </ol>
+    <p class="hint">The well remembers.</p>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const topic = params.get("topic") || "samara-haunt";
+    document.getElementById("topic").textContent = topic;
+    document.getElementById("open-app").href = "https://ntfy.sh/" + encodeURIComponent(topic);
+
+    const glow = document.getElementById("glow");
+    document.addEventListener("mousemove", (e) => {
+      glow.style.left = e.clientX + "px";
+      glow.style.top = e.clientY + "px";
+    });
+
+    const rgb = document.getElementById("rgb-glitch");
+    setInterval(() => {
+      rgb.classList.remove("on");
+      void rgb.offsetWidth;
+      rgb.classList.add("on");
+    }, 10000);
+
+    function rand(a, b) { return Math.random() * (b - a) + a; }
+    ["s1","s2","s3","s4"].forEach((id) => {
+      const el = document.getElementById(id);
+      el.style.left = rand(0, innerWidth) + "px";
+      el.style.top = rand(0, innerHeight) + "px";
+      (function wander() {
+        el.style.left = rand(8, innerWidth - 16) + "px";
+        el.style.top = rand(8, innerHeight - 16) + "px";
+        setTimeout(wander, rand(1400, 2800));
+      })();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Samara</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: transparent;
+      pointer-events: none;
+      user-select: none;
+    }
+    #stage {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      pointer-events: none;
+    }
+    #samara {
+      width: 180px;
+      height: auto;
+      pointer-events: auto;
+      cursor: pointer;
+      transform-origin: bottom center;
+    }
+    #glitch-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0;
+      z-index: 10;
+      background: transparent;
+    }
+    #glitch-overlay.active {
+      animation: screenGlitch 0.4s steps(3) forwards;
+    }
+    @keyframes screenGlitch {
+      0% {
+        opacity: 0.85;
+        background:
+          linear-gradient(90deg, rgba(255,0,0,0.25) 0%, transparent 30%, rgba(0,255,255,0.2) 70%, transparent 100%);
+        transform: translate(3px, 0);
+      }
+      30% {
+        opacity: 0.7;
+        background:
+          linear-gradient(90deg, rgba(0,255,255,0.3) 0%, transparent 40%, rgba(255,0,255,0.25) 60%);
+        transform: translate(-5px, 2px);
+      }
+      60% {
+        opacity: 0.5;
+        background:
+          linear-gradient(180deg, rgba(255,0,0,0.2), rgba(0,255,0,0.15), rgba(0,0,255,0.2));
+        transform: translate(2px, -3px);
+      }
+      100% {
+        opacity: 0;
+        background: transparent;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="glitch-overlay"></div>
+  <div id="stage">
+    <img id="samara" alt="" draggable="false">
+  </div>
+  <audio id="static-sound" src="static.wav" preload="auto"></audio>
+
+  <script>
+    const frames = [];
+    for (let i = 0; i < 20; i++) frames.push(`frames/f${String(i).padStart(2,"0")}.png`);
+
+    const img = document.getElementById("samara");
+    const overlay = document.getElementById("glitch-overlay");
+    const staticSound = document.getElementById("static-sound");
+    let playing = false;
+    let timer = null;
+    let scale = 0.7;
+
+    function clearTimer() {
+      if (timer) { clearTimeout(timer); timer = null; }
+    }
+
+    function play() {
+      clearTimer();
+      playing = true;
+      scale = 0.65;
+      img.style.opacity = "1";
+      img.style.filter = "none";
+      img.style.transform = `scale(${scale})`;
+      overlay.classList.remove("active");
+
+      staticSound.volume = 0.35;
+      staticSound.currentTime = 0;
+      staticSound.play().catch(() => {});
+
+      let i = 0;
+      function next() {
+        if (!playing) return;
+        img.src = frames[i];
+        if (i >= 14) {
+          scale = Math.min(1.1, scale + 0.05);
+          img.style.transform = `scale(${scale})`;
+        }
+        i++;
+        if (i < frames.length) {
+          timer = setTimeout(next, 90);
+        } else {
+          timer = setTimeout(() => { if (playing) dismiss(); }, 700);
+        }
+      }
+      next();
+    }
+
+    function dismiss() {
+      playing = false;
+      clearTimer();
+      overlay.classList.add("active");
+      img.style.opacity = "0";
+      setTimeout(() => {
+        if (window.samara) window.samara.dismiss();
+      }, 200);
+    }
+
+    img.addEventListener("mousedown", (e) => {
+      e.preventDefault();
+      dismiss();
+    });
+
+    if (window.samara) {
+      window.samara.onPlay(() => play());
+      window.samara.ready();
+    } else {
+      setTimeout(play, 400);
+    }
+  </script>
+</body>
+</html>
