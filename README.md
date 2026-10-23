@@ -3,8 +3,10 @@
 She will haunt you in various ways.
 
 ## Origin
-First appeared as a motion-triggered clip on a Samsung Family Hub fridge.
-Then she moved.
+The initial idea was to make an app people could install on smart fridges.
+I can show how it works (video), but that means nothing without approval.
+So in addition to stalking everyone's fridge, she can stalk your phone and desktop.
+Samara remembers.
 
 ## Desktop
 Without warning, she crawls out of a well somewhere on your screen and begins walking toward you.
