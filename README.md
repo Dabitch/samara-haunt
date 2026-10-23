@@ -4,6 +4,7 @@ She will haunt you in various ways.
 
 ## Videos
 
+- [Samara full demo, desktop and fridge, on YouTube](https://youtu.be/lnmafY6e5C8)
 - [Samara desktop demo on YouTube](https://www.youtube.com/watch?v=k8nw7NfwKpU)
 - [Samara on the fridge on YouTube](https://www.youtube.com/watch?v=Z-YdzodCmnc)
 
