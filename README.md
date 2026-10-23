@@ -27,7 +27,7 @@ xattr -cr node_modules/electron/dist/Electron.app
 ```
 
 ### Controls
-- **Click / push her** — RGB glitch + smoke, she disappears
+- **Click / push her** — RGB glitch, she disappears
 - **Ctrl+Shift+S** (Cmd+Shift+S) — summon now (for testing)
 - **Ctrl+Shift+R** — dismiss
 
