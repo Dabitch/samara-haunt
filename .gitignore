@@ -1,3 +1,4 @@
 .DS_Store
 node_modules/
 media/*.mp4
+!media/samara-desktop-demo.mp4

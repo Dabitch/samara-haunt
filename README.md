@@ -56,6 +56,8 @@ The well artwork is in `media/`.
 ### Desktop
 She climbs out of the well and walks toward you.
 
+[Watch the desktop demo video (19 s, with sound)](media/samara-desktop-demo.mp4). When she vanishes, the RGB glitch covers the whole screen.
+
 <p>
 <img src="screenshots/desktop-1-well.png" width="260" alt="Samara climbing out of the well">
 <img src="screenshots/desktop-2-crawling.png" width="260" alt="Samara crawling over the edge of the well">
