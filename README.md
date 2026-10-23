@@ -7,6 +7,9 @@ The initial idea was to make an app people could install on smart fridges.
 I can show how it works (video), but that means nothing without approval.
 So in addition to stalking everyone's fridge, she can stalk your phone and desktop.
 Samara remembers.
+This week proved to us all that everything can be hacked, and October really is Spooktober
+
+I started out prototyping a Tizen app for my Samsung fridge, then discovered that Samsung takes two weeks or more to approve an app. Samara does not wait two weeks, so she moved to desktops and phones instead.
 
 ## Desktop
 Without warning, she crawls out of a well somewhere on your screen and begins walking toward you.
@@ -47,3 +50,22 @@ python publish.py
 
 ## Media
 The well artwork is in `media/`.
+
+## Screenshots
+
+### Desktop
+She climbs out of the well and walks toward you.
+
+<p>
+<img src="screenshots/desktop-1-well.png" width="260" alt="Samara climbing out of the well">
+<img src="screenshots/desktop-2-crawling.png" width="260" alt="Samara crawling over the edge of the well">
+<img src="screenshots/desktop-3-closer.png" width="260" alt="Samara walking closer">
+</p>
+
+### Phone (ntfy)
+Subscribe page and the messages as they arrive in ntfy.
+
+<p>
+<img src="screenshots/phone-1-subscribe.png" width="260" alt="Samara ntfy subscribe page on a phone">
+<img src="screenshots/phone-2-notifications.png" width="260" alt="Samara messages in ntfy">
+</p>
