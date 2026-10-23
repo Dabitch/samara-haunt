@@ -2,6 +2,11 @@
 
 She will haunt you in various ways.
 
+## Videos
+
+- [Samara desktop demo on YouTube](https://www.youtube.com/watch?v=k8nw7NfwKpU)
+- [Samara on the fridge on YouTube](https://www.youtube.com/watch?v=Z-YdzodCmnc)
+
 ## Origin
 The initial idea was to make an app people could install on smart fridges.
 I can show how it works (video), but that means nothing without approval.
